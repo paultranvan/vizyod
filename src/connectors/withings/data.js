@@ -18,7 +18,7 @@ const getSleepSummary = async (token, startDate, endDate) => {
 
 
 const main = async () => {
-    const token = '0d46f638f0632909fa4a9b27660f4209b23558a0'
+    const token = 'fake-token'
     const resp = await getSleepSummary(token, '2022-01-01', '2022-03-01')
     console.log(resp);
 }
