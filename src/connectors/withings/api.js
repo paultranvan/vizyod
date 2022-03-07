@@ -17,14 +17,6 @@ const getSleepSummary = async (token, startDate, endDate) => {
 }
 
 
-const main = async () => {
-    const token = 'fake-token'
-    const resp = await getSleepSummary(token, '2022-01-01', '2022-03-01')
-    console.log(resp);
-}
-
-main()
-
 module.exports = {
     getSleepSummary
 }
