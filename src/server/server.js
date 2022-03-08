@@ -14,12 +14,14 @@ app.listen(PORT, () => {
 })
 app.use(cors({origin: '*'}));
 
-
-app.get('/data', (req, res) => {
+app.get('/data/:type', (req, res) => {
     try {
-      console.log('received request')
-      const sleepFile = JSON.parse(fs.readFileSync('./sleep.json'))
-      const series = sleepFile.body.series
+      const dataType = req.params.type
+      console.log('received request for ', dataType)
+
+      const dataPath = `data/${dataType}.json`
+      const data = JSON.parse(fs.readFileSync(dataPath))
+      const series = data.series
       res.send(series)
 
     } catch (error) {

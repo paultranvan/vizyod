@@ -6,10 +6,10 @@ const Graph = () => {
 
   const [data, setData] = useState([])
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        'http://localhost:8080/data'
+        'http://localhost:8080/data/sleep'
       )
       console.log('res data : ', result.data)
       setData(result.data)
