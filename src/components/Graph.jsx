@@ -25,11 +25,28 @@ const Graph = () => {
     yAxis: {
       type: 'value'
     },
+    color: ['#1446e2', '#6882d3'],
+    tooltip: {
+      show: true
+    },
     series: [
-      {
+      /*{
         data: data.map(sleep => sleep.data.total_sleep_time / 3600),
         type: 'bar'
-      }
+      },*/
+      {
+        data: data.map(sleep => sleep.data.deepsleepduration / 3600),
+        type: 'bar',
+        stack: 'x',
+      },
+      {
+        data: data.map(sleep => sleep.data.lightsleepduration / 3600),
+        type: 'bar',
+        stack: 'x',
+        markLine: {
+          data: [{ type: 'average', name: 'Avg' }]
+        }
+      },
     ]
   }
   return (
