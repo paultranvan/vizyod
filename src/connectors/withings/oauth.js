@@ -54,6 +54,26 @@ class Oauth {
         }
     }
 
+    async refreshAccessToken(refreshToken) {
+        const url = 'https://wbsapi.withings.net/v2/oauth2'
+        const resp = await axios.post(url, {
+            action: 'requesttoken',
+            client_id: this.client_id,
+            client_secret: this.client_secret,
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken
+        })
+        return {
+            accessToken: resp.data.body.access_token,
+            refreshToken: resp.data.body.refresh_token,
+            expiresIn: resp.data.body.expires_in
+        }
+    }
+
+    writeTokenFile(data) {
+        return fs.writeFileSync(consts.TOKEN_FILE_PATH, JSON.stringify(data, null, 2))
+    }
+
     startTokenRequest() {
         const url = this.buildURL()
         open(url)

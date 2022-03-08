@@ -1,25 +1,22 @@
 
 const express = require('express')
-const oauth = require('./oauth')
-const fs = require('fs')
-
+const { Oauth } = require('./oauth')
 
 const app = express()
 
 const PORT = 5000
 
-let client
+let oauth
 let appServer
 
 app.get('/get_token', async (req, res) => {
     try {
         const code = req.query.code
-        const data = await client.getAccessToken(code)
-        fs.writeFileSync('.token.json', JSON.stringify(data, null, 2))
-        
-        console.log('Token stored in .token.json ')
+        const data = await oauth.getAccessToken(code)
+        oauth.writeTokenFile(data)
         res.send('Token received, you can close this window.')
 
+        console.log('Token written, shutting down...')
         appServer.close()
 
     } catch (error) {
@@ -31,7 +28,6 @@ app.get('/get_token', async (req, res) => {
 
 appServer = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)
-
-    client = new oauth.Oauth()
-    client.startTokenRequest()
+    oauth = new Oauth()
+    oauth.startTokenRequest()
 })
