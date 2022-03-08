@@ -9,13 +9,13 @@ const getSleepData = async () => {
       throw new Error('Empty file')
     } 
     const accessToken = token.accessToken
-    let resp = await api.getSleepSummary(accessToken, '2022-02-01', '2022-03-07')
+    let resp = await api.getSleepSummary(accessToken, '2021-01-01', '2022-03-07')
 
     if (resp.status === 401) {
       oauth = new Oauth()
       const data = await oauth.refreshAccessToken(token.refreshToken)
       oauth.writeTokenFile(data)
-      resp = await api.getSleepSummary(data.accessToken, '2022-02-01', '2022-03-07')
+      resp = await api.getSleepSummary(data.accessToken, '2021-02-01', '2022-03-07')
     }
 
     fs.writeFileSync('data/sleep.json', JSON.stringify(resp.body, null, 2))

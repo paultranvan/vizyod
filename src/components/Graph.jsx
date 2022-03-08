@@ -9,7 +9,14 @@ const Graph = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        'http://localhost:8080/data/sleep'
+        'http://localhost:8080/data/sleep',
+        { 
+          params:
+          {
+            startDate: '2022-01-01',
+            endDate: '2022-01-31'
+          }
+        }
       )
       console.log('res data : ', result.data)
       setData(result.data)
