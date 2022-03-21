@@ -11,6 +11,7 @@
     "echarts": "^5.3.1",
     "echarts-for-react": "^3.0.2",
     "express": "^4.17.3",
+    "lodash": "^4.17.21",
     "open": "^8.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -22,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "get-token": "node src/connectors/withings/server.js"
+    "get-token": "node src/connectors/withings/server.js",
+    "start-server": "node src/server/server.js"
   },
   "eslintConfig": {
     "extends": [
