@@ -61,7 +61,7 @@ const getMeasure = async (token, startDate, endDate) => {
 
     const params = {
         action: 'getmeas',
-        meastypes: '1,4,6,8,11,76,77,88', // TODO: use const with measure name
+        meastypes: '1,4,5,6,8,11,76,77,88', // TODO: use const with measure name
         category: 1,
         startdate: convertDateInTimestamp(startDate),
         enddate: convertDateInTimestamp(endDate)

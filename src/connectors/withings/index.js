@@ -128,6 +128,7 @@ const getHeartData = async (token) => {
 
 const main = async () => {
   const token = await getAccessToken()
+
   getSleepData(token)
   getActivityData(token)
   getMeasureData(token)
@@ -135,5 +136,6 @@ const main = async () => {
   getHeartData(token)
   getHighFrequencyData(token)
 }
+
 main()
 
