@@ -14,8 +14,9 @@ app.use(cors({origin: '*'}));
 app.get('/data/:type', (req, res) => {
     try {
       const dataType = req.params.type
-      const startDate = new Date(req.query.startDate)
-      const endDate = new Date(req.query.endDate)
+      const startDate = req.query.startDate ? new Date(req.query.startDate) : null
+      const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date()
+
       console.log(`received request for ${dataType} from ${startDate} to ${endDate}`)
 
       const dataPath = `data/${dataType}.json`
