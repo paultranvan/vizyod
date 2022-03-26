@@ -1,10 +1,19 @@
 import './App.css';
+import { QueryClient, QueryClientProvider } from "react-query";
 
-import Graph from './Graph'
+import SleepGraph from './SleepGraph'
+import MeasuresGraph from './MeasuresGraph'
+
+const queryClient = new QueryClient()
 
 const App = () => {
   return (
-    <Graph />
+    <>
+      <QueryClientProvider client={queryClient}>
+        <SleepGraph />
+        <MeasuresGraph />
+      </QueryClientProvider>
+    </>
   )
 }
 
