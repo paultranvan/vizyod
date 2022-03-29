@@ -15,13 +15,16 @@ const SleepGraph = () => {
     return "No data"
   }
 
-  const deepSleepData = data.map(sleep => roundNumber(sleep.data.deepsleepduration / 3600))
-  const lightSleepData = data.map(sleep => roundNumber(sleep.data.lightsleepduration / 3600))
+  const deepSleepData = data.map(sleep => roundNumber(sleep.measure.deepsleepduration / 3600))
+  const lightSleepData = data.map(sleep => roundNumber(sleep.measure.lightsleepduration / 3600))
   const dates = data.map(sleep => sleep.date)
 
-  const series = [{data: deepSleepData, name: 'Deep Sleep'}, {data: lightSleepData, name: 'Light Sleep'}]
+  const series = [
+    {
+      data: deepSleepData,
+      name: 'Deep Sleep',
+      color: COLORS.DEEP_BLUE
   const stackedBar = makeStackedBarGraph(series)
-  console.log(stackedBar);
   return (
     <GraphSerie xData={dates} series={stackedBar} />
   )

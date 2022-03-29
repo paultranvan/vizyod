@@ -1,12 +1,30 @@
 const axios = require('axios').default
 const get = require('lodash/get')
 
+
+// TODO: put those utils func in utils and export for node.js
+const roundNumber = (number) => {
+    return Math.round(number * 100) / 100
+}
+
 const convertDateInTimestamp = (date) => {
     return Math.floor(date.getTime() / 1000)
 }
 
 const convertDateInYMD = (date) => {
     return date.toISOString().split('T')[0]
+}
+
+const convertTimestampInISO = (timestamp) => {
+    return new Date(timestamp).toISOString()
+}
+
+const sortByDate = (series) => {
+    return series.sort((a,b) => {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(a.date) - new Date(b.date);
+      })
 }
 
 const makePaginatedRequest = async (verb, { url, params, token, resDataKey }) => {
@@ -53,21 +71,51 @@ const getSleepSummary = async (token, startDate, endDate) => {
         enddateymd: convertDateInYMD(endDate),
     }
     const results = await makePaginatedRequest('GET', {url, params, token, resDataKey: 'series' })
-    return { series: results }
+    const series = results.map(res => {
+        return {
+            date: res.date,
+            startDate: convertTimestampInISO(res.startdate  * 1000),
+            endDate: convertTimestampInISO(res.enddate  * 1000),
+            measure: {...res.data}
+        }
+    })
+    return { series: sortByDate(series) }
 }
+
 
 const getMeasure = async (token, startDate, endDate) => {
     const url = 'https://wbsapi.withings.net/measure'
 
+    const measTypes = {
+        '1': 'weight',
+        '6': 'fat_ratio',
+        '8': 'fat_mass',
+        '11': 'heart_pulse',
+        '76': 'muscle_mass',
+        '77': 'hydration',
+        '88': 'bone_mass'
+    }
+
     const params = {
         action: 'getmeas',
-        meastypes: '1,4,5,6,8,11,76,77,88', // TODO: use const with measure name
+        meastypes: '1,6,8,11,76,77,88', // TODO: use const with measure name
         category: 1,
         startdate: convertDateInTimestamp(startDate),
         enddate: convertDateInTimestamp(endDate)
     }
     const results = await makePaginatedRequest('GET', {url, params, token, resDataKey: 'measuregrps' })
-    return { series: results }
+    
+    const series = results.map(res => {
+        const measure = {}
+        for (const m of res.measures) {
+            measure[measTypes[m.type]] =  roundNumber(m.value * Math.pow(10, m.unit))
+        }
+        return {
+            date: new Date(res.date * 1000).toISOString(),
+            measure
+        }
+    })
+    return { series: sortByDate(series) }
 }
 
 const getActivity = async (token, startDate, endDate) => {
