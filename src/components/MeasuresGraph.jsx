@@ -4,6 +4,7 @@ import GraphSerie from './GraphSerie'
 import { getSeries } from '../queries/queries'
 import { convertDateSingleDay } from '../lib/utils'
 import { makeBarAndLinesGraph } from '../lib/graph'
+import { COLORS } from '../lib/consts'
 
 
 const MeasuresGraph = () => {
@@ -23,7 +24,23 @@ const MeasuresGraph = () => {
   const muscleData = filteredData.map(serie => serie.measure.muscle_mass)
   const dates = filteredData.map(serie => convertDateSingleDay(serie.date))
 
-  const series = [{data: weightData, name: 'Weight'}, {data: fatData, name: 'Fat'}, {data: muscleData, name: 'Muscle'}]
+  const series = [
+    {
+      data: weightData,
+      name: 'Weight',
+      color: COLORS.LIGHT_BLUE
+    }, 
+    {
+      data: fatData,
+      name: 'Fat',
+      color: COLORS.RED
+    },
+    {
+      data: muscleData,
+      name: 'Muscle',
+      color: COLORS.GREEN
+    }
+  ]
   const stackedBar = makeBarAndLinesGraph(series)
   return (
     <GraphSerie xData={dates} series={stackedBar} />

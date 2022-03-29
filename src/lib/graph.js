@@ -6,7 +6,10 @@ const makeStackedBarGraphSerie = (serie, {withAverage = true} = {}) => {
     data: serie.data,
     type: 'bar',
     name: serie.name,
-    stack: 'x'
+    stack: 'x',
+    itemStyle: {
+      color: serie.color
+    }
   }
 }
 
@@ -42,12 +45,18 @@ export const makeBarAndLinesGraph = (series) => {
         data: serie.data,
         type: 'bar',
         name: serie.name,
+        itemStyle: {
+          color: serie.color
+        }
       }
     } else {
       return {
         data: serie.data,
         type: 'line',
         name: serie.name,
+        itemStyle: {
+          color: serie.color
+        }
       }
     }
   })
