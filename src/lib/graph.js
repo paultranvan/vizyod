@@ -1,5 +1,6 @@
 import { sum, unzip } from 'lodash'
 import { roundNumber } from './utils'
+import { GRAPH_TYPES } from './consts'
 
 const makeStackedBarGraphSerie = (serie, { withAverage = true } = {}) => {
   return {
@@ -25,6 +26,14 @@ const makeLineGraphSerie = (serie) => {
       data: [{ type: 'average', name: 'Avg' }],
       label: `Average ${serie.name}`
     }
+  }
+}
+
+export const makeGraphFromSeries = (graphType, series) => {
+  if (graphType === GRAPH_TYPES.STACKED_BAR) {
+    return makeStackedBarGraph(series)
+  } else {
+    return makeBarAndLinesGraph(series)
   }
 }
 

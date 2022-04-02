@@ -1,8 +1,8 @@
 import './App.css'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-import SleepGraph from './SleepGraph'
-import MeasuresGraph from './MeasuresGraph'
+import Serie from './Serie'
+import { sleep, measure } from '../models/models'
 
 const queryClient = new QueryClient()
 
@@ -10,8 +10,8 @@ const App = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <SleepGraph />
-        <MeasuresGraph />
+        <Serie model={sleep} />
+        <Serie model={measure} />
       </QueryClientProvider>
     </>
   )
