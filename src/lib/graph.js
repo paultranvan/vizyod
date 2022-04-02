@@ -1,7 +1,7 @@
 import { sum, unzip } from 'lodash'
 import { roundNumber } from './utils'
 
-const makeStackedBarGraphSerie = (serie, {withAverage = true} = {}) => {
+const makeStackedBarGraphSerie = (serie, { withAverage = true } = {}) => {
   return {
     data: serie.data,
     type: 'bar',
@@ -17,7 +17,7 @@ const makeLineGraphSerie = (serie) => {
   return {
     data: serie.data,
     type: 'line',
-    name: serie.name,  
+    name: serie.name,
     itemStyle: {
       color: 'black'
     },
@@ -28,13 +28,18 @@ const makeLineGraphSerie = (serie) => {
   }
 }
 
-export const makeStackedBarGraph = (series, {withTotalAverage = true} = {}) => {
-  const graphSeries = series.map(serie => makeStackedBarGraphSerie(serie))
+export const makeStackedBarGraph = (
+  series,
+  { withTotalAverage = true } = {}
+) => {
+  const graphSeries = series.map((serie) => makeStackedBarGraphSerie(serie))
   if (withTotalAverage) {
-    const seriesData = series.map(serie => serie.data)
-    const sumSeries = unzip(seriesData).map(values => roundNumber(sum(values)))
-    graphSeries.push(makeLineGraphSerie({ data: sumSeries, name: 'Total'}))
-  } 
+    const seriesData = series.map((serie) => serie.data)
+    const sumSeries = unzip(seriesData).map((values) =>
+      roundNumber(sum(values))
+    )
+    graphSeries.push(makeLineGraphSerie({ data: sumSeries, name: 'Total' }))
+  }
   return graphSeries
 }
 

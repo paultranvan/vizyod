@@ -1,5 +1,5 @@
-import './App.css';
-import { QueryClient, QueryClientProvider } from "react-query";
+import './App.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import SleepGraph from './SleepGraph'
 import MeasuresGraph from './MeasuresGraph'
@@ -17,5 +17,4 @@ const App = () => {
   )
 }
 
-
-export default App;
+export default App

@@ -1,5 +1,5 @@
 export const computeAverage = (values) => {
-  return values.reduce((a,b) => a + b, 0) / values.length;
+  return values.reduce((a, b) => a + b, 0) / values.length
 }
 
 export const roundNumber = (number) => {

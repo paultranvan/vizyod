@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
-import ReactEcharts from "echarts-for-react"
+import ReactEcharts from 'echarts-for-react'
 
-const GraphSerie = ({xData, series}) => {
-
+const GraphSerie = ({ xData, series }) => {
   const option = useMemo(() => {
     return {
       xAxis: {
@@ -14,7 +13,7 @@ const GraphSerie = ({xData, series}) => {
       },
       tooltip: {
         show: true,
-        trigger: 'axis',
+        trigger: 'axis'
       },
       legend: {
         show: true,

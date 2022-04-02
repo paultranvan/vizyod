@@ -3,7 +3,10 @@ const api = require('./api')
 const { Oauth } = require('./oauth')
 
 const handleError = (error) => {
-  if ((error.code && error.code === 'ENOENT') || (error.message && error.message.match(/Empty file/))) {
+  if (
+    (error.code && error.code === 'ENOENT') ||
+    (error.message && error.message.match(/Empty file/))
+  ) {
     console.log('No token found: please run `npm run get-token`')
     return
   } else {
@@ -12,7 +15,7 @@ const handleError = (error) => {
 }
 
 const getAccessToken = async () => {
-  let token = JSON.parse(fs.readFileSync('.token.json')) 
+  let token = JSON.parse(fs.readFileSync('.token.json'))
   if (!token || !token.accessToken) {
     throw new Error('Empty file')
   }
@@ -44,8 +47,7 @@ const getSleepData = async (token) => {
     const endDate = new Date()
     const data = await api.getSleepSummary(token, startDate, endDate)
     saveFile('sleep.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
@@ -59,8 +61,7 @@ const getMeasureData = async (token) => {
 
     const data = await api.getMeasure(token, startDate, endDate)
     saveFile('measure.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
@@ -74,8 +75,7 @@ const getActivityData = async (token) => {
 
     const data = await api.getActivity(token, startDate, endDate)
     saveFile('activity.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
@@ -89,8 +89,7 @@ const getHighFrequencyData = async (token) => {
     const data = await api.getHighFrequencyActivity(token, startDate, endDate)
 
     saveFile('highfrequencyactivity.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
@@ -104,12 +103,10 @@ const getWorkoutData = async (token) => {
     const data = await api.getWorkouts(token, startDate, endDate)
 
     saveFile('workout.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
-
 
 const getHeartData = async (token) => {
   try {
@@ -120,8 +117,7 @@ const getHeartData = async (token) => {
     const data = await api.getHeartList(token, startDate, endDate)
 
     saveFile('heart.json', data)
-  }
-  catch (error) {
+  } catch (error) {
     return handleError(error)
   }
 }
@@ -138,4 +134,3 @@ const main = async () => {
 }
 
 main()
-
