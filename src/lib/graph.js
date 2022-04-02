@@ -47,6 +47,10 @@ export const makeBarAndLinesGraph = (series) => {
         name: serie.name,
         itemStyle: {
           color: serie.color
+        },
+        markLine: {
+          data: [{ type: 'average', name: 'Avg' }],
+          label: `Average ${serie.name}`
         }
       }
     } else {
