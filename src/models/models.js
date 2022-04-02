@@ -38,3 +38,15 @@ export const measure = {
   ],
   graphType: GRAPH_TYPES.BAR_AND_LINES
 }
+
+export const activity = {
+  dataType: 'activity',
+  dataSeries: [
+    {
+      name: 'calories',
+      label: 'Calories',
+      color: COLORS.DEEP_BLUE
+    }
+  ],
+  graphType: GRAPH_TYPES.STACKED_BAR
+}

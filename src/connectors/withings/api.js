@@ -133,11 +133,18 @@ const getMeasure = async (token, startDate, endDate) => {
 
 const getActivity = async (token, startDate, endDate) => {
   const url = 'https://wbsapi.withings.net/v2/measure'
+  const activityFields = [
+    'steps',
+    'distance',
+    'elevation',
+    'calories',
+    'hr_average'
+  ]
   const params = {
     action: 'getactivity',
     startdateymd: convertDateInYMD(startDate),
     enddateymd: convertDateInYMD(endDate),
-    data_fields: 'steps,distance,elevation,calories,hr_average'
+    data_fields: activityFields.join(',')
   }
   const results = await makePaginatedRequest('POST', {
     url,
@@ -145,8 +152,23 @@ const getActivity = async (token, startDate, endDate) => {
     token,
     resDataKey: 'activities'
   })
+  const buildMeasure = (res) => {
+    const m = {}
+    for (const field of activityFields) {
+      if (res[field]) {
+        m[field] = res[field]
+      }
+    }
+    return m
+  }
+  const series = results.map((res) => {
+    return {
+      date: res.date,
+      measure: buildMeasure(res)
+    }
+  })
 
-  return { series: results }
+  return { series: sortByDate(series) }
 }
 
 const getHighFrequencyActivity = async (token, startDate, endDate) => {
