@@ -1,4 +1,5 @@
 import { COLORS, GRAPH_TYPES } from '../lib/consts'
+import { roundNumber } from '../lib/utils'
 
 export const sleep = {
   dataType: 'sleep',
@@ -6,12 +7,14 @@ export const sleep = {
     {
       name: 'lightsleepduration',
       label: 'Light Sleep',
-      color: COLORS.LIGHT_BLUE
+      color: COLORS.LIGHT_BLUE,
+      dataTransform: (data) => roundNumber(data / 3600)
     },
     {
       name: 'deepsleepduration',
       label: 'Deep Sleep',
-      color: COLORS.DEEP_BLUE
+      color: COLORS.DEEP_BLUE,
+      dataTransform: (data) => roundNumber(data / 3600)
     }
   ],
   graphType: GRAPH_TYPES.STACKED_BAR

@@ -1,34 +1,29 @@
-import React from 'react'
-import { useQuery } from 'react-query'
+import React, { useMemo } from 'react'
 import GraphSerie from './GraphSerie'
-import { getSeries } from '../queries/queries'
 import { roundNumber } from '../lib/utils'
 import { makeGraphFromSeries } from '../lib/graph'
 
-const Serie = ({ model }) => {
-  const { isLoading, data } = useQuery(model.dataType, () =>
-    getSeries(model.dataType, {
-      startDate: '2022-03-01',
-      endDate: '2022-04-01'
+const Serie = ({ model, data }) => {
+  const series = useMemo(() => {
+    return model.dataSeries.map((serie) => {
+      return {
+        data: data.map((dataPoint) => {
+          return serie.dataTransform
+            ? serie.dataTransform(dataPoint.measure[serie.name])
+            : dataPoint.measure[serie.name]
+        }),
+        name: serie.label,
+        color: serie.color
+      }
     })
-  )
-  if (isLoading) {
-    return `Loading ${model.dataType}...`
-  }
-  if (!data) {
-    return `No data found for ${model.dataType}`
-  }
+  }, [model, data])
 
-  const series = model.dataSeries.map((serie) => {
-    return {
-      data: data.map((dataPoint) => roundNumber(dataPoint.measure[serie.name])),
-      name: serie.label,
-      color: serie.color
-    }
-  })
-  const dates = data.map((dataPoint) => dataPoint.date)
+  const dates = useMemo(() => data.map((dataPoint) => dataPoint.date), [data])
 
-  const graphSeries = makeGraphFromSeries(model.graphType, series)
+  const graphSeries = useMemo(() => {
+    return makeGraphFromSeries(model.graphType, series)
+  }, [model, series])
+
   return <GraphSerie xData={dates} series={graphSeries} />
 }
 
