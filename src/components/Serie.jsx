@@ -1,25 +1,39 @@
 import React, { useMemo } from 'react'
 import GraphSerie from './GraphSerie'
-import { roundNumber } from '../lib/utils'
 import { makeGraphFromSeries } from '../lib/graph'
+import { convertDateSingleDay } from '../lib/utils'
 
 const Serie = ({ model, data }) => {
+  // Filter missing values from data
+  const filteredData = useMemo(() => {
+    return data.filter((dataPoint) => {
+      for (const serie of model.dataSeries) {
+        return !!dataPoint.measure[serie.name]
+      }
+    })
+  }, [data])
+
+  // Create series based on model
   const series = useMemo(() => {
     return model.dataSeries.map((serie) => {
       return {
-        data: data.map((dataPoint) => {
-          return serie.dataTransform
-            ? serie.dataTransform(dataPoint.measure[serie.name])
-            : dataPoint.measure[serie.name]
+        data: filteredData.map((dataPoint) => {
+          const value = dataPoint.measure[serie.name]
+          return serie.dataTransform ? serie.dataTransform(value) : value
         }),
         name: serie.label,
         color: serie.color
       }
     })
-  }, [model, data])
+  }, [model, filteredData])
 
-  const dates = useMemo(() => data.map((dataPoint) => dataPoint.date), [data])
+  // Extract dates
+  const dates = useMemo(
+    () => filteredData.map((dataPoint) => convertDateSingleDay(dataPoint.date)),
+    [filteredData]
+  )
 
+  // Build Graph
   const graphSeries = useMemo(() => {
     return makeGraphFromSeries(model.graphType, series)
   }, [model, series])
