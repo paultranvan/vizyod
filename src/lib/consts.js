@@ -8,5 +8,6 @@ export const COLORS = {
 
 export const GRAPH_TYPES = {
   STACKED_BAR: 'stacked_bar',
-  BAR_AND_LINES: 'bar_and_lines'
+  BAR_AND_LINES: 'bar_and_lines',
+  STACKED_LINES: 'stacked_lines'
 }

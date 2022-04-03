@@ -71,11 +71,28 @@ export const makeBarAndLinesGraph = (series) => {
       return {
         data: serie.data,
         type: 'line',
-        name: serie.name,
-        itemStyle: {
-          color: serie.color
-        }
+
+const makeStackedLinesGraph = (series, { withTotalAverage = true } = {}) => {
+  return series.map((serie, i) => {
+    const lineGraph = {
+      data: serie.data,
+      type: 'line',
+      stack: 'Total',
+      name: serie.name,
+      areaStyle: {},
+      emphasis: {
+        focus: 'series'
+      },
+      itemStyle: {
+        color: serie.color
       }
     }
+    if (i === series.length - 1 && withTotalAverage) {
+      lineGraph.markLine = {
+        data: [{ type: 'average', name: 'Avg' }],
+        color: 'black'
+      }
+    }
+    return lineGraph
   })
 }
