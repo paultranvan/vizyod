@@ -56,8 +56,14 @@ export const activity = {
     {
       name: 'calories',
       label: 'Calories',
+export const heartRate = {
+  dataType: 'activity',
+  dataSeries: [
+    {
+      name: 'hr_average',
+      label: 'Hearth rate',
       color: COLORS.DEEP_BLUE
     }
   ],
-  graphType: GRAPH_TYPES.STACKED_BAR
+  graphType: GRAPH_TYPES.LINES
 }
