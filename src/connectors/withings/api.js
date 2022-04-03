@@ -138,6 +138,7 @@ const getActivity = async (token, startDate, endDate) => {
     'distance',
     'elevation',
     'calories',
+    'totalcalories',
     'hr_average'
   ]
   const params = {
