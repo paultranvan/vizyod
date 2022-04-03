@@ -5,15 +5,15 @@ export const sleep = {
   dataType: 'sleep',
   dataSeries: [
     {
-      name: 'lightsleepduration',
-      label: 'Light Sleep',
-      color: COLORS.LIGHT_BLUE,
-      dataTransform: (data) => roundNumber(data / 3600)
-    },
-    {
       name: 'deepsleepduration',
       label: 'Deep Sleep',
       color: COLORS.DEEP_BLUE,
+      dataTransform: (data) => roundNumber(data / 3600)
+    },
+    {
+      name: 'lightsleepduration',
+      label: 'Light Sleep',
+      color: COLORS.LIGHT_BLUE,
       dataTransform: (data) => roundNumber(data / 3600)
     }
   ],
@@ -24,9 +24,9 @@ export const measure = {
   dataType: 'measure',
   dataSeries: [
     {
-      name: 'weight',
-      label: 'Weight',
-      color: COLORS.DEEP_BLUE
+      name: 'bone_mass',
+      label: 'Bone',
+      color: COLORS.YELLOW
     },
     {
       name: 'fat_mass',
@@ -54,8 +54,21 @@ export const activity = {
   dataType: 'activity',
   dataSeries: [
     {
+      name: 'steps',
+      label: 'Steps',
+      color: COLORS.DEEP_BLUE
+    },
+    {
+      // TODO: add total calories
+      // TODO: 2 Y axis: https://echarts.apache.org/examples/en/editor.html?c=mix-line-bar
       name: 'calories',
-      label: 'Calories',
+      label: 'Active calories (Kcal)',
+      color: 'black'
+    }
+  ],
+  graphType: GRAPH_TYPES.BAR_AND_LINES
+}
+
 export const heartRate = {
   dataType: 'activity',
   dataSeries: [
