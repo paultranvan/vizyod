@@ -13,7 +13,13 @@ const GraphSerie = ({ xData, series }) => {
       },
       tooltip: {
         show: true,
-        trigger: 'axis'
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        }
       },
       legend: {
         show: true,
