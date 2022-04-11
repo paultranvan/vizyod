@@ -1,16 +1,14 @@
 import React, { useMemo } from 'react'
 import ReactEcharts from 'echarts-for-react'
 
-const GraphSerie = ({ xData, series }) => {
+const GraphSerie = ({ xData, series, yAxis }) => {
   const option = useMemo(() => {
     return {
       xAxis: {
         type: 'category',
         data: xData
       },
-      yAxis: {
-        type: 'value'
-      },
+      yAxis,
       tooltip: {
         show: true,
         trigger: 'axis',

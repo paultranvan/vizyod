@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import GraphSerie from './GraphSerie'
-import { makeGraphFromSeries } from '../lib/graph'
+import { makeGraphFromSeries, buildYAxis } from '../lib/graph'
 import { convertDateSingleDay } from '../lib/utils'
 
 const Serie = ({ model, data }) => {
@@ -11,7 +11,7 @@ const Serie = ({ model, data }) => {
         return !!dataPoint.measure[serie.name]
       }
     })
-  }, [data])
+  }, [data, model])
 
   // Create series based on model
   const series = useMemo(() => {
@@ -38,7 +38,11 @@ const Serie = ({ model, data }) => {
     return makeGraphFromSeries(model.graphType, series)
   }, [model, series])
 
-  return <GraphSerie xData={dates} series={graphSeries} />
+  const yAxis = useMemo(() => {
+    return buildYAxis(model)
+  }, [model])
+
+  return <GraphSerie xData={dates} series={graphSeries} yAxis={yAxis} />
 }
 
 export default Serie

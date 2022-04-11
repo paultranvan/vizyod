@@ -3,6 +3,7 @@ import { roundNumber } from '../lib/utils'
 
 export const sleep = {
   dataType: 'sleep',
+  unit: 'Hours',
   dataSeries: [
     {
       name: 'deepsleepduration',
@@ -22,6 +23,7 @@ export const sleep = {
 
 export const measure = {
   dataType: 'measure',
+  unit: 'Kg',
   dataSeries: [
     {
       name: 'bone_mass',
@@ -56,14 +58,16 @@ export const activity = {
     {
       name: 'steps',
       label: 'Steps',
-      color: COLORS.DEEP_BLUE
+      color: COLORS.DEEP_BLUE,
+      unit: 'Steps'
     },
     {
       // TODO: add total calories
-      // TODO: 2 Y axis: https://echarts.apache.org/examples/en/editor.html?c=mix-line-bar
       name: 'calories',
-      label: 'Active calories (Kcal)',
-      color: 'black'
+      label: 'Active calories',
+      color: 'black',
+      unit: 'Kcal',
+      yAxisIndex: 1
     }
   ],
   graphType: GRAPH_TYPES.BAR_AND_LINES
@@ -71,6 +75,7 @@ export const activity = {
 
 export const heartRate = {
   dataType: 'activity',
+  unit: 'Bpm',
   dataSeries: [
     {
       name: 'hr_average',

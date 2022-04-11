@@ -29,7 +29,7 @@ const makeStackedBarGraph = (series, { withTotalAverage = true } = {}) => {
   return graphSeries
 }
 
-const makeLinesGraph = (series) => {
+const makeLinesGraph = (series, { yAxisIndex = 0 } = {}) => {
   return series.map((serie) => {
     return {
       data: serie.data,
@@ -41,7 +41,8 @@ const makeLinesGraph = (series) => {
       markLine: {
         data: [{ type: 'average', name: 'Avg' }],
         label: `Average ${serie.name}`
-      }
+      },
+      yAxisIndex
     }
   })
 }
@@ -74,7 +75,7 @@ const makeBarAndLinesGraph = (series) => {
         }
       }
     } else {
-      const lineGraph = makeLinesGraph([serie])
+      const lineGraph = makeLinesGraph([serie], { yAxisIndex: 1 })
       return lineGraph[0]
     }
   })
@@ -103,4 +104,18 @@ const makeStackedLinesGraph = (series, { withTotalAverage = true } = {}) => {
     }
     return lineGraph
   })
+}
+
+export const buildYAxis = (model) => {
+  const baseAxis = {
+    type: 'value'
+  }
+  if (model.graphType === GRAPH_TYPES.BAR_AND_LINES) {
+    return [
+      { ...baseAxis, name: model.dataSeries[0].unit },
+      { ...baseAxis, name: model.dataSeries[1].unit }
+    ]
+  } else {
+    return [{ ...baseAxis, name: model.unit }]
+  }
 }
