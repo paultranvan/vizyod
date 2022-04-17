@@ -2,9 +2,7 @@ import { sum, unzip } from 'lodash'
 import { roundNumber } from './utils'
 import { GRAPH_TYPES } from './consts'
 
-// TODO refactor
-
-export const makeGraphFromSeries = (graphType, series, options) => {
+export const makeGraphFromSeries = (graphType, series) => {
   if (graphType === GRAPH_TYPES.STACKED_BAR) {
     return makeStackedBarGraph(series)
   } else if (graphType === GRAPH_TYPES.BAR_AND_LINES) {
@@ -13,6 +11,26 @@ export const makeGraphFromSeries = (graphType, series, options) => {
     return makeStackedLinesGraph(series)
   }
   return makeLinesGraph(series)
+}
+
+const makeBaseGraph = (serie, type, options = {}) => {
+  const { yAxisIndex = 0, withAverage = true, ...rest } = options
+  const baseGraph = {
+    data: serie.data,
+    type,
+    name: serie.name,
+    itemStyle: {
+      color: serie.color || 'black'
+    },
+    yAxisIndex
+  }
+  if (withAverage) {
+    baseGraph.markLine = {
+      data: [{ type: 'average', name: 'Avg' }],
+      label: `Average ${serie.name}`
+    }
+  }
+  return Object.assign(baseGraph, rest)
 }
 
 const makeStackedBarGraph = (series, { withTotalAverage = true } = {}) => {
@@ -30,79 +48,41 @@ const makeStackedBarGraph = (series, { withTotalAverage = true } = {}) => {
 }
 
 const makeLinesGraph = (series, { yAxisIndex = 0 } = {}) => {
-  return series.map((serie) => {
-    return {
-      data: serie.data,
-      type: 'line',
-      name: serie.name,
-      itemStyle: {
-        color: serie.color || 'black'
-      },
-      markLine: {
-        data: [{ type: 'average', name: 'Avg' }],
-        label: `Average ${serie.name}`
-      },
-      yAxisIndex
-    }
-  })
+  return series.map((serie) => makeBaseGraph(serie, 'line', { yAxisIndex }))
 }
 
-const makeStackedBarGraphSerie = (serie, { withAverage = true } = {}) => {
-  return {
-    data: serie.data,
-    type: 'bar',
-    name: serie.name,
-    stack: 'x',
-    itemStyle: {
-      color: serie.color
-    }
-  }
+const makeStackedBarGraphSerie = (serie) => {
+  return makeBaseGraph(serie, 'bar', { stack: 'x' })
 }
 
 const makeBarAndLinesGraph = (series) => {
   return series.map((serie, i) => {
     if (i === 0) {
-      return {
-        data: serie.data,
-        type: 'bar',
-        name: serie.name,
-        itemStyle: {
-          color: serie.color
-        },
-        markLine: {
-          data: [{ type: 'average', name: 'Avg' }],
-          label: `Average ${serie.name}`
-        }
-      }
+      return makeBaseGraph(serie, 'bar')
     } else {
-      const lineGraph = makeLinesGraph([serie], { yAxisIndex: 1 })
-      return lineGraph[0]
+      return makeBaseGraph(serie, 'line', { yAxisIndex: 1 })
     }
   })
 }
 
-const makeStackedLinesGraph = (series, { withTotalAverage = true } = {}) => {
+const makeStackedLinesGraph = (series) => {
   return series.map((serie, i) => {
-    const lineGraph = {
-      data: serie.data,
-      type: 'line',
-      stack: 'Total',
-      name: serie.name,
+    const options = {
       areaStyle: {},
+      stack: 'Total',
       emphasis: {
         focus: 'series'
-      },
-      itemStyle: {
-        color: serie.color
       }
     }
-    if (i === series.length - 1 && withTotalAverage) {
-      lineGraph.markLine = {
-        data: [{ type: 'average', name: 'Avg' }],
-        color: 'black'
-      }
-    }
-    return lineGraph
+    return i < series.length - 1
+      ? makeBaseGraph(serie, 'line', {
+          withAverage: false,
+          ...options
+        })
+      : makeBaseGraph(serie, 'line', {
+          withAverage: true,
+          ...options
+        })
   })
 }
 
