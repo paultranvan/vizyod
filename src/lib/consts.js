@@ -11,3 +11,19 @@ export const GRAPH_TYPES = {
   BAR_AND_LINES: 'bar_and_lines',
   STACKED_LINES: 'stacked_lines'
 }
+
+const DAY = 'day'
+const MONTH = 'month'
+const YEAR = 'year'
+
+export const INTERVALS = {
+  DAY,
+  MONTH,
+  YEAR
+}
+
+export const INTERVALS_INDEX = {
+  [DAY]: 0,
+  [MONTH]: 1,
+  [YEAR]: 2
+}
