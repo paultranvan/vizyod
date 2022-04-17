@@ -40,14 +40,6 @@ export const measure = {
       label: 'Muscle',
       color: COLORS.GREEN
     }
-    /*,
-    TODO: find how to improve this graph
-    {
-      name: 'weight',
-      label: 'Weight',
-      color: COLORS.DEEP_BLUE,
-      isTotal: true
-    }*/
   ],
   graphType: GRAPH_TYPES.STACKED_LINES
 }
@@ -67,7 +59,8 @@ export const activity = {
       label: 'Active calories',
       color: 'black',
       unit: 'Kcal',
-      yAxisIndex: 1
+      yAxisIndex: 1,
+      dataTransform: (data) => roundNumber(data, { decimals: 0 })
     }
   ],
   graphType: GRAPH_TYPES.BAR_AND_LINES

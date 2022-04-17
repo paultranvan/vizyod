@@ -58,9 +58,9 @@ const makeStackedBarGraphSerie = (serie) => {
 const makeBarAndLinesGraph = (series) => {
   return series.map((serie, i) => {
     if (i === 0) {
-      return makeBaseGraph(serie, 'bar')
+      return makeBaseGraph(serie, 'bar', { withAverage: false })
     } else {
-      return makeBaseGraph(serie, 'line', { yAxisIndex: 1 })
+      return makeBaseGraph(serie, 'line', { yAxisIndex: 1, withAverage: false })
     }
   })
 }
