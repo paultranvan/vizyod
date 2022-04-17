@@ -90,12 +90,20 @@ export const buildYAxis = (model) => {
   const baseAxis = {
     type: 'value'
   }
-  if (model.graphType === GRAPH_TYPES.BAR_AND_LINES) {
-    return [
-      { ...baseAxis, name: model.dataSeries[0].unit },
-      { ...baseAxis, name: model.dataSeries[1].unit }
-    ]
-  } else {
-    return [{ ...baseAxis, name: model.unit }]
+  const units = model.unit
+    ? [model.unit]
+    : model.dataSeries.map((serie) => serie.unit)
+
+  // Display 1 or 2 Y axis depending on units
+  if (units.length === 1) {
+    return [{ ...baseAxis, name: units[0] }]
   }
+  if (units.length === 2) {
+    return [
+      { ...baseAxis, name: units[0] },
+      { ...baseAxis, name: units[1] }
+    ]
+  }
+  // No unit given, or too many
+  return null
 }
