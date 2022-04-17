@@ -2,14 +2,16 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import Serie from './Serie'
 import { getSeries } from '../queries/queries'
+import { convertDateSingleDay } from '../lib/utils'
 
 const Query = ({ model }) => {
-  const { isLoading, data } = useQuery(model.dataType, () =>
-    getSeries(model.dataType, {
+  const { isLoading, data } = useQuery(model.dataType, () => {
+    const currentDate = convertDateSingleDay(new Date())
+    return getSeries(model.dataType, {
       startDate: '2022-03-01',
-      endDate: '2022-04-01'
+      endDate: currentDate
     })
-  )
+  })
 
   if (isLoading) {
     return `Loading ${model.dataType}...`
