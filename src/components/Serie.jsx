@@ -7,9 +7,7 @@ const Serie = ({ model, data }) => {
   // Filter missing values from data
   const filteredData = useMemo(() => {
     return data.filter((dataPoint) => {
-      for (const serie of model.dataSeries) {
-        return !!dataPoint.measure[serie.name]
-      }
+      return !!model.dataSeries.find((serie) => dataPoint.measure[serie.name])
     })
   }, [data, model])
 

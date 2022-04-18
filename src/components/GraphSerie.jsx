@@ -30,7 +30,7 @@ const GraphSerie = ({ xData, series, yAxis }) => {
       },
       series
     }
-  }, [xData, series])
+  }, [xData, series, yAxis])
 
   return (
     <>

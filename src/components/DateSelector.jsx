@@ -41,7 +41,7 @@ const DateSelector = ({ interval, handleChange }) => {
         <DatePicker
           views={views}
           label="Date"
-          minDate={new Date('2012-03-01')}
+          minDate={new Date('2012-03-01')} // TODO: get min/max data from server
           maxDate={new Date(maxDate)}
           value={period}
           onChange={onChange}

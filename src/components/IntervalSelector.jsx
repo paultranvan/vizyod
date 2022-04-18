@@ -13,7 +13,7 @@ const IntervalSelector = ({ interval, handleChange }) => {
     }
   }
   const tabs = Object.keys(INTERVALS).map((interval) => {
-    return <Tab label={interval} />
+    return <Tab key={interval} label={interval} />
   })
   const intervalIndex = INTERVALS_INDEX[interval]
 
