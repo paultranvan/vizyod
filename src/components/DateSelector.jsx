@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -7,19 +7,15 @@ import frLocale from 'date-fns/locale/fr'
 import enLocale from 'date-fns/locale/en-US'
 import { convertDateSingleDay } from '../lib/utils'
 import { INTERVALS } from '../lib/consts'
-import { getYear, getMonth, startOfMonth, startOfYear } from 'date-fns'
 
-const DateSelector = ({ interval }) => {
+// This component should be init with a default date when interval is selected
+const DateSelector = ({ interval, handleChange }) => {
   const [period, setPeriod] = useState(null)
-  useEffect(() => {
-    if (interval === INTERVALS.YEAR) {
-      setPeriod(startOfYear(new Date()))
-    } else if (interval === INTERVALS.MONTH) {
-      setPeriod(startOfMonth(new Date()))
-    } else {
-      setPeriod(new Date())
-    }
-  }, [interval])
+
+  const onChange = (newValue) => {
+    setPeriod(newValue)
+    handleChange(newValue)
+  }
 
   const maxDate = convertDateSingleDay(new Date())
 
@@ -48,9 +44,7 @@ const DateSelector = ({ interval }) => {
           minDate={new Date('2012-03-01')}
           maxDate={new Date(maxDate)}
           value={period}
-          onChange={(newValue) => {
-            setPeriod(newValue)
-          }}
+          onChange={onChange}
           renderInput={(params) => <TextField {...params} helperText={null} />}
           centered
         />

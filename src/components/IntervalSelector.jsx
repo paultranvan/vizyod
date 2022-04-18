@@ -12,7 +12,6 @@ const IntervalSelector = ({ interval, handleChange }) => {
       }
     }
   }
-
   const tabs = Object.keys(INTERVALS).map((interval) => {
     return <Tab label={interval} />
   })
