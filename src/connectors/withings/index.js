@@ -22,10 +22,9 @@ const getAccessToken = async () => {
   try {
     await api.getSleepSummary(token.accessToken, new Date(), new Date())
   } catch (error) {
-    console.log('error : ', error)
     if (error && error.status === 401) {
-      console.log('Need to refresh token')
-      oauth = new Oauth()
+      console.log('Invalid token. Refresh it...')
+      const oauth = new Oauth()
       token = await oauth.refreshAccessToken(token.refreshToken)
       oauth.writeTokenFile(token)
     }
