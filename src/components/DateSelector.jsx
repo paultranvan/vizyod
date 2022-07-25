@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import Box from '@mui/material/Box'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -36,7 +37,7 @@ const DateSelector = ({ interval, handleChange }) => {
   }, [interval])
 
   return (
-    <>
+    <Box sx={{ display: 'inline-flex', justifyContent: 'center' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={pickLocale()}>
         <DatePicker
           views={views}
@@ -46,10 +47,9 @@ const DateSelector = ({ interval, handleChange }) => {
           value={period}
           onChange={onChange}
           renderInput={(params) => <TextField {...params} helperText={null} />}
-          centered
         />
       </LocalizationProvider>
-    </>
+    </Box>
   )
 }
 

@@ -18,13 +18,11 @@ const IntervalSelector = ({ interval, handleChange }) => {
   const intervalIndex = INTERVALS_INDEX[interval]
 
   return (
-    <>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <Tabs value={intervalIndex} onChange={onChange} centered>
-          {tabs}
-        </Tabs>
-      </Box>
-    </>
+    <Box sx={{ bgcolor: 'background.paper' }}>
+      <Tabs value={intervalIndex} onChange={onChange} centered>
+        {tabs}
+      </Tabs>
+    </Box>
   )
 }
 export default IntervalSelector

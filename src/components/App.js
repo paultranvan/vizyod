@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import Box from '@mui/material/Box'
 import Query from './Query'
 import DateSelector from './DateSelector'
 import { sleep, measure, activity, heartRate } from '../models/models'
@@ -24,7 +25,13 @@ const App = () => {
   const dateRange = useDateSelector(interval, pickedDate)
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}
+    >
       <IntervalSelector
         interval={interval}
         handleChange={handleIntervalChange}
@@ -38,7 +45,7 @@ const App = () => {
           <Query model={heartRate} dateRange={dateRange} />
         </QueryClientProvider>
       ) : null}
-    </>
+    </Box>
   )
 }
 
