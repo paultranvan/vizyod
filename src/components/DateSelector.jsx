@@ -11,7 +11,7 @@ import { INTERVALS } from '../lib/consts'
 
 // This component should be init with a default date when interval is selected
 const DateSelector = ({ interval, handleChange }) => {
-  const [period, setPeriod] = useState(null)
+  const [period, setPeriod] = useState(new Date())
 
   const onChange = (newValue) => {
     setPeriod(newValue)
@@ -35,6 +35,8 @@ const DateSelector = ({ interval, handleChange }) => {
       return [interval]
     }
   }, [interval])
+
+  console.log('period : ', period)
 
   return (
     <Box sx={{ display: 'inline-flex', justifyContent: 'center' }}>
