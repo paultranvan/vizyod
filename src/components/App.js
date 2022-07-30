@@ -40,9 +40,9 @@ const App = () => {
       {dateRange ? (
         <QueryClientProvider client={queryClient}>
           <Query model={sleep} dateRange={dateRange} />
-          <Query model={measure} dateRange={dateRange} />
-          <Query model={activity} dateRange={dateRange} />
           <Query model={heartRate} dateRange={dateRange} />
+          <Query model={activity} dateRange={dateRange} />
+          <Query model={measure} dateRange={dateRange} />
         </QueryClientProvider>
       ) : null}
     </Box>

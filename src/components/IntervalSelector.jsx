@@ -18,7 +18,7 @@ const IntervalSelector = ({ interval, handleChange }) => {
   const intervalIndex = INTERVALS_INDEX[interval]
 
   return (
-    <Box sx={{ bgcolor: 'background.paper' }}>
+    <Box sx={{ bgcolor: 'background.paper', mb: 2 }}>
       <Tabs value={intervalIndex} onChange={onChange} centered>
         {tabs}
       </Tabs>
