@@ -8,6 +8,7 @@ import IntervalSelector from './IntervalSelector'
 import './App.css'
 import { INTERVALS } from '../lib/consts'
 import useDateSelector from './useDateSelector'
+import AppMenu from './menu/AppMenu'
 
 const queryClient = new QueryClient()
 
@@ -32,6 +33,7 @@ const App = () => {
         justifyContent: 'center'
       }}
     >
+      <AppMenu />
       <IntervalSelector
         interval={interval}
         handleChange={handleIntervalChange}
