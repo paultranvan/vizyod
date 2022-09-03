@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import Serie from './Serie'
 import { getSeries } from '../queries/queries'
 
-// TODO: this component might be trigger more than necessary
+// TODO: this component might be triggered more than necessary
 const Query = ({ model, dateRange }) => {
   const queryKey = [model.dataType, dateRange.start, dateRange.end]
   const { isLoading, data } = useQuery(queryKey, () => {

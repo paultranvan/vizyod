@@ -7,7 +7,7 @@ import {
   endOfMonth,
   endOfYear
 } from 'date-fns'
-import { INTERVALS } from '../lib/consts'
+import { INTERVALS } from '../../lib/consts'
 
 const useDateSelector = (interval, pickedDate) => {
   const [dateRange, setDateRange] = useState(null)

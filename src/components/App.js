@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Box from '@mui/material/Box'
-import Query from './Query'
+
 import DateSelector from './DateSelector'
 import { sleep, measure, activity, heartRate } from '../models/models'
 import IntervalSelector from './IntervalSelector'
 import './App.css'
 import { INTERVALS } from '../lib/consts'
-import useDateSelector from './useDateSelector'
+import useDateSelector from './hooks/useDateSelector'
 import AppMenu from './menu/AppMenu'
+import Query from './Query'
 
 const queryClient = new QueryClient()
 
