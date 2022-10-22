@@ -14,7 +14,7 @@
     "axios": "^0.26.0",
     "cors": "^2.8.5",
     "date-fns": "^2.28.0",
-    "echarts": "^5.3.1",
+    "echarts": "^5.4.0",
     "echarts-for-react": "^3.0.2",
     "express": "^4.17.3",
     "lodash": "^4.17.21",
