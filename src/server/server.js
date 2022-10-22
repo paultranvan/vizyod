@@ -17,7 +17,7 @@ app.get('/data/:type', (req, res) => {
     const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date()
 
     console.log(
-      `received request for ${dataType} from ${startDate} to ${endDate}`
+      `received request for ${dataType} from ${startDate.toISOString()} to ${endDate.toISOString()}`
     )
 
     const dataPath = `data/${dataType}.json`
