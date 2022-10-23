@@ -5,9 +5,9 @@ import { getSeries } from '../queries/queries'
 
 // TODO: this component might be triggered more than necessary
 const Query = ({ model, dateRange }) => {
-  const queryKey = [model.dataType, dateRange.start, dateRange.end]
+  const queryKey = [model?.dataType, dateRange?.start, dateRange?.end]
   const { isLoading, data } = useQuery(queryKey, () => {
-    if (!dateRange.start || !dateRange.end || !model.dataType) {
+    if (!model || !dateRange.start || !dateRange.end || !model.dataType) {
       return null
     }
     return getSeries(model.dataType, {
@@ -15,6 +15,10 @@ const Query = ({ model, dateRange }) => {
       endDate: dateRange.end
     })
   })
+
+  if (!model) {
+    return null
+  }
 
   if (isLoading) {
     return `Loading ${model.dataType}...`
