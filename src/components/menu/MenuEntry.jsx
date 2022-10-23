@@ -6,12 +6,12 @@ import {
   ListItemText
 } from '@mui/material'
 
-const MenuEntry = ({ text, icon }) => {
+const MenuEntry = ({ name, type, icon, onMenuSelection }) => {
   return (
-    <ListItem key={text} disablePadding>
+    <ListItem key={name} disablePadding onClick={() => onMenuSelection(type)}>
       <ListItemButton>
         <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={text} />
+        <ListItemText primary={name} />
       </ListItemButton>
     </ListItem>
   )

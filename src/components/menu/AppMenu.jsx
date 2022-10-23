@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 const drawerWidth = 240
 
-const AppMenu = () => {
+const AppMenu = ({onMenuSelection}) => {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
@@ -71,7 +71,7 @@ const AppMenu = () => {
             }
           }}
         >
-          <Sidebar />
+          <Sidebar onMenuSelection={onMenuSelection} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -84,7 +84,7 @@ const AppMenu = () => {
           }}
           open
         >
-          <Sidebar />
+          <Sidebar onMenuSelection={onMenuSelection} />
         </Drawer>
       </Box>
       <Box

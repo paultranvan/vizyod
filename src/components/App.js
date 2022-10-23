@@ -16,12 +16,17 @@ const queryClient = new QueryClient()
 const App = () => {
   const [interval, setInterval] = useState(INTERVALS.YEAR)
   const [pickedDate, setPickedDate] = useState(null)
+  const [dataType, setDataType] = useState(null)
 
   const handleIntervalChange = (newInterval) => {
     setInterval(newInterval)
   }
   const handleDateChange = (newPickedDate) => {
     setPickedDate(newPickedDate)
+  }
+
+  const handleMenuSelection = (dataType) => {
+    setDataType(dataType)
   }
 
   const dateRange = useDateSelector(interval, pickedDate)
@@ -34,20 +39,17 @@ const App = () => {
         justifyContent: 'center'
       }}
     >
-      <AppMenu />
-      <IntervalSelector
+      <AppMenu onMenuSelection={handleMenuSelection}/>
+      <Box
         interval={interval}
         handleChange={handleIntervalChange}
       />
       <DateSelector interval={interval} handleChange={handleDateChange} />
       {dateRange ? (
-        <QueryClientProvider client={queryClient}>
-          <Query model={sleep} dateRange={dateRange} />
-          <Query model={heartRate} dateRange={dateRange} />
-          <Query model={activity} dateRange={dateRange} />
-          <Query model={measure} dateRange={dateRange} />
-        </QueryClientProvider>
-      ) : null}
+          <QueryClientProvider client={queryClient}>
+              <Query model={dataType} dateRange={dateRange} />
+          </QueryClientProvider>
+        ) : null}
     </Box>
   )
 }
