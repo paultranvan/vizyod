@@ -3,13 +3,13 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import Box from '@mui/material/Box'
 
 import DateSelector from './DateSelector'
-import { sleep, measure, activity, heartRate } from '../models/models'
 import IntervalSelector from './IntervalSelector'
 import './App.css'
 import { INTERVALS } from '../lib/consts'
 import useDateSelector from './hooks/useDateSelector'
 import AppMenu from './menu/AppMenu'
 import Query from './Query'
+import { Toolbar } from '@mui/material'
 
 const queryClient = new QueryClient()
 
@@ -35,23 +35,29 @@ const App = () => {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center'
       }}
     >
       <AppMenu onMenuSelection={handleMenuSelection}/>
       <Box
-        interval={interval}
-        handleChange={handleIntervalChange}
-      />
-      <DateSelector interval={interval} handleChange={handleDateChange} />
-      {dateRange ? (
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default'}}
+      >
+        <Toolbar />
+
+        <IntervalSelector
+          interval={interval}
+          handleChange={handleIntervalChange}
+        />
+        <DateSelector interval={interval} handleChange={handleDateChange} />
+        {dateRange ? (
           <QueryClientProvider client={queryClient}>
               <Query model={dataType} dateRange={dateRange} />
           </QueryClientProvider>
         ) : null}
+        </Box>
     </Box>
   )
 }
 
 export default App
+

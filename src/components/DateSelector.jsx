@@ -71,7 +71,7 @@ const DateSelector = ({ interval, handleChange }) => {
   }, [interval])
 
   return (
-    <Box sx={{ display: 'inline-flex', justifyContent: 'center' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <IconButton
         sx={{ fontSize: 30, pt: 2, pl: 2, mr: 1 }}
         onClick={onLeftArrow}

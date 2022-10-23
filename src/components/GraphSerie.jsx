@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import ReactEcharts from 'echarts-for-react'
+import { Box } from '@mui/material'
 
 const GraphSerie = ({ xData, series, yAxis }) => {
   const option = useMemo(() => {
@@ -33,9 +34,9 @@ const GraphSerie = ({ xData, series, yAxis }) => {
   }, [xData, series, yAxis])
 
   return (
-    <>
-      <ReactEcharts option={option} />
-    </>
+    <Box>
+      <ReactEcharts option={option} notMerge={true} />
+    </Box>
   )
 }
 

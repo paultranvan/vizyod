@@ -95,7 +95,6 @@ const AppMenu = ({onMenuSelection}) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` }
         }}
       >
-        <Toolbar />
       </Box>
     </Box>
   )
