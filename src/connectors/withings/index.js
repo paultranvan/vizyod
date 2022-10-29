@@ -121,15 +121,20 @@ const getHeartData = async (token) => {
   }
 }
 
-const main = async () => {
+//TODO: fails when called from sync and token invalid
+const getAllData = async () => {
   const token = await getAccessToken()
 
-  getSleepData(token)
-  getActivityData(token)
-  getMeasureData(token)
-  getWorkoutData(token)
-  getHeartData(token)
-  getHighFrequencyData(token)
+  await getSleepData(token)
+  await getActivityData(token)
+  await getMeasureData(token)
+  await getWorkoutData(token)
+  await getHeartData(token)
+  await getHighFrequencyData(token)
 }
 
-main()
+if (require.main === module) {
+  getAllData()
+} 
+
+module.exports = { getAllData }

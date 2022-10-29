@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const cors = require('cors')
+const { getAllData } = require('../connectors/withings')
 
 const app = express()
 const PORT = 8080
@@ -31,6 +32,17 @@ app.get('/data/:type', (req, res) => {
       return dateSerie >= startDate && dateSerie <= endDate
     })
     res.send(filteredData)
+  } catch (error) {
+    console.error(error)
+    res.send(error)
+  }
+})
+
+app.post('/sync', async (req, res) => {
+  try {
+    console.log('Sync data...')
+    await getAllData()
+    res.send('done')
   } catch (error) {
     console.error(error)
     res.send(error)
