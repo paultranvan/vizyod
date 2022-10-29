@@ -25,7 +25,7 @@ const App = () => {
     setPickedDate(newPickedDate)
   }
 
-  const handleMenuSelection = (dataType) => {
+  const handleDataTypeSelection = (dataType) => {
     setDataType(dataType)
   }
 
@@ -37,24 +37,24 @@ const App = () => {
         display: 'flex',
       }}
     >
-      <AppMenu onMenuSelection={handleMenuSelection}/>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default'}}
-      >
-        <Toolbar />
+      <QueryClientProvider client={queryClient}>
+        <AppMenu onDataType={handleDataTypeSelection} />
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, bgcolor: 'background.default'}}
+        >
+          <Toolbar />
 
-        <IntervalSelector
-          interval={interval}
-          handleChange={handleIntervalChange}
-        />
-        <DateSelector interval={interval} handleChange={handleDateChange} />
-        {dateRange ? (
-          <QueryClientProvider client={queryClient}>
-              <Query model={dataType} dateRange={dateRange} />
-          </QueryClientProvider>
-        ) : null}
-        </Box>
+          <IntervalSelector
+            interval={interval}
+            handleChange={handleIntervalChange}
+          />
+          <DateSelector interval={interval} handleChange={handleDateChange} />
+          {dateRange &&
+            <Query model={dataType} dateRange={dateRange} />
+          }
+          </Box>
+      </QueryClientProvider>
     </Box>
   )
 }

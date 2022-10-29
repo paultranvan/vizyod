@@ -8,19 +8,21 @@ import HotelIcon from '@mui/icons-material/Hotel'
 
 import { sleep, measure, activity, heartRate } from '../../models/models'
 
-
 import MenuEntry from './MenuEntry'
+import SyncMenuEntry from './SyncMenuEntry'
 
-const Sidebar = ({onMenuSelection }) => {
+const Sidebar = ({onDataType }) => {
   return (
     <Box sx={{ width: 250 }} role="presentation" onClick={null}>
       <List>
-        <MenuEntry name={'Accueil'} icon={<HomeIcon />} onMenuSelection={() => null} />
+        <MenuEntry name={'Accueil'} icon={<HomeIcon />}/>
         <Divider />
-        <MenuEntry name={'Cardio'} type={heartRate} icon={<HeartBrokenIcon />} onMenuSelection={onMenuSelection} />
-        <MenuEntry name={'Poids'} type={measure} icon={<MonitorWeightIcon />} onMenuSelection={onMenuSelection} />
-        <MenuEntry name={'Sommeil'} type={sleep} icon={<HotelIcon />} onMenuSelection={onMenuSelection} />
-        <MenuEntry name={'Activités'} type={activity} icon={<RunCirlceIcon />} onMenuSelection={onMenuSelection} />
+        <MenuEntry name={'Cardio'} type={heartRate} icon={<HeartBrokenIcon />} onMenuSelection={onDataType} />
+        <MenuEntry name={'Poids'} type={measure} icon={<MonitorWeightIcon />} onMenuSelection={onDataType} />
+        <MenuEntry name={'Sommeil'} type={sleep} icon={<HotelIcon />} onMenuSelection={onDataType} />
+        <MenuEntry name={'Activités'} type={activity} icon={<RunCirlceIcon />} onMenuSelection={onDataType} />
+        <Divider />
+        <SyncMenuEntry /> 
       </List>
     </Box>
   )

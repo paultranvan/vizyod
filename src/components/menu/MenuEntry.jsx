@@ -6,7 +6,7 @@ import {
   ListItemText
 } from '@mui/material'
 
-const MenuEntry = ({ name, type, icon, onMenuSelection }) => {
+const MenuEntry = ({ name, type, icon, onMenuSelection = () => null }) => {
   return (
     <ListItem key={name} disablePadding onClick={() => onMenuSelection(type)}>
       <ListItemButton>

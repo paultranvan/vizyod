@@ -11,3 +11,7 @@ export const getSeries = async (type, { startDate, endDate } = {}) => {
   })
   return result.data
 }
+
+export const sync = async () => {
+  return axios.post(`${SERVER_URL}/sync`)
+}
