@@ -53,10 +53,14 @@ const makePaginatedRequest = async (
       // See https://developer.withings.com/api-reference/#section/Response-status
       throw resp.data
     }
-    console.log('get data on:', resDataKey)
     const respData = get(resp, `data.body.${resDataKey}`)
-    if (respData && respData.length > 0) {
+    if (Array.isArray(respData) && respData.length > 0) {
       results.push(...respData)
+    } else if(respData) {
+      for (const [ts, values] of Object.entries(respData)) {
+        const date = new Date(ts * 1000)
+        results.push({date, ...values})
+      }
     }
     if (!resp.data.body.more) {
       hasMore = false
@@ -174,6 +178,7 @@ const getActivity = async (token, startDate, endDate) => {
 
 const getHighFrequencyActivity = async (token, startDate, endDate) => {
   const url = 'https://wbsapi.withings.net/v2/measure'
+
   const params = {
     action: 'getintradayactivity',
     startdate: convertDateInTimestamp(startDate),

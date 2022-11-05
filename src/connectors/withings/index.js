@@ -1,5 +1,7 @@
 const fs = require('fs')
+const isEqual = require('lodash/isEqual')
 const api = require('./api')
+const { DATA_TYPES } = require('./consts')
 const { Oauth } = require('./oauth')
 
 const handleError = (error) => {
@@ -38,14 +40,75 @@ const saveFile = (fileName, data) => {
   console.log(`${path} saved`)
 }
 
+const readDataFile = (dataType) => {
+  try {
+    const path = `data/${dataType}.json`
+    const content = fs.readFileSync(path)
+    return JSON.parse(content)  
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.log('No file yet, let\'s create it.')
+      return null
+    }
+    throw error
+  }
+}
+
+const seriesDeduplication = (existingSeries, newSeries) => {
+  const toRemoveIdx = []
+  const newSeriesToKeep = [...newSeries]
+  for (let i = 0; i < newSeries.length; i++) {
+    for (let j = existingSeries.length - 1; j >= 0; j--) {
+      if (isEqual(newSeries[i], existingSeries[j])) {
+        toRemoveIdx.push(i)
+        break
+      }
+      if (new Date(newSeries[i].date) > new Date(existingSeries[j].date)) {
+        // Assume all data are correclty sorted by asc date 
+        break
+      }
+    }    
+  } 
+  for (let i = toRemoveIdx.length -1 ; i >= 0; i--) {
+    // Go backward to avoid messing with array indexes
+    newSeriesToKeep.splice(toRemoveIdx[i], 1)
+  }
+  return [...existingSeries, ...newSeriesToKeep]
+}
+
+const saveData = (dataType, existingData, newData) => {
+  if (newData?.series?.length > 0) {
+    if (existingData?.series?.length > 0) {
+      const seriesToSave = seriesDeduplication(existingData.series, newData.series)
+      const nSavedSeries = seriesToSave.length - existingData.series.length
+      existingData.series = seriesToSave
+      saveFile(`${dataType}.json`, existingData)
+      console.log(`Saved ${nSavedSeries} new ${dataType} series`)
+  } else {
+      saveFile(`${dataType}.json`, newData)
+      console.log(`Saved ${newData.series.length} ${dataType} series`)
+    }
+  } else {
+    console.log('No data retrieved')
+  }
+}
+
+const getStartDate = (existingData) => {
+  return existingData?.series?.length > 0
+     ? new Date(existingData.series[existingData.series.length - 1].date)
+     : new Date(0)
+}
+
 const getSleepData = async (token) => {
   try {
     console.log('Get sleep data...')
 
-    const startDate = new Date('2021-01-01')
+    const sleepData = readDataFile(DATA_TYPES.SLEEP)
+    const startDate = getStartDate(sleepData)
     const endDate = new Date()
-    const data = await api.getSleepSummary(token, startDate, endDate)
-    saveFile('sleep.json', data)
+
+    const newSleepData = await api.getSleepSummary(token, startDate, endDate)
+    saveData(DATA_TYPES.SLEEP, sleepData, newSleepData)
   } catch (error) {
     return handleError(error)
   }
@@ -55,11 +118,13 @@ const getMeasureData = async (token) => {
   try {
     console.log('Get measure data...')
 
-    const startDate = new Date('2021-01-01')
+    const measuresData = readDataFile(DATA_TYPES.MEASURE)
+    const startDate = getStartDate(measuresData)
     const endDate = new Date()
 
-    const data = await api.getMeasure(token, startDate, endDate)
-    saveFile('measure.json', data)
+    const newData = await api.getMeasure(token, startDate, endDate)
+    saveData(DATA_TYPES.MEASURE, measuresData, newData)
+
   } catch (error) {
     return handleError(error)
   }
@@ -69,11 +134,13 @@ const getActivityData = async (token) => {
   try {
     console.log('Get activity data...')
 
-    const startDate = new Date('2021-01-01')
+    const activityData = readDataFile(DATA_TYPES.ACTIVITY)
+    const startDate = getStartDate(activityData)
     const endDate = new Date()
 
-    const data = await api.getActivity(token, startDate, endDate)
-    saveFile('activity.json', data)
+    const newData = await api.getActivity(token, startDate, endDate)
+    saveData(DATA_TYPES.ACTIVITY, activityData, newData)
+
   } catch (error) {
     return handleError(error)
   }
@@ -81,13 +148,14 @@ const getActivityData = async (token) => {
 
 const getHighFrequencyData = async (token) => {
   try {
-    console.log('Get heart data...')
+    console.log('Get high frequency data...')
 
-    const startDate = new Date('2021-01-01')
+    const highFrequencyData = readDataFile(DATA_TYPES.HIGH_FREQUENCY_ACTIVITY)
+    const startDate = getStartDate(highFrequencyData)
     const endDate = new Date()
-    const data = await api.getHighFrequencyActivity(token, startDate, endDate)
 
-    saveFile('highfrequencyactivity.json', data)
+    const newData = await api.getHighFrequencyActivity(token, startDate, endDate)
+    saveData(DATA_TYPES.HIGH_FREQUENCY_ACTIVITY, highFrequencyData, newData)
   } catch (error) {
     return handleError(error)
   }
@@ -97,11 +165,12 @@ const getWorkoutData = async (token) => {
   try {
     console.log('Get workout data...')
 
-    const startDate = new Date('2021-01-01')
+    const workoutData = readDataFile(DATA_TYPES.WORKOUT)
+    const startDate = getStartDate(workoutData)
     const endDate = new Date()
-    const data = await api.getWorkouts(token, startDate, endDate)
 
-    saveFile('workout.json', data)
+    const newData = await api.getWorkouts(token, startDate, endDate)
+    saveData(DATA_TYPES.WORKOUT, workoutData, newData)
   } catch (error) {
     return handleError(error)
   }
@@ -111,11 +180,12 @@ const getHeartData = async (token) => {
   try {
     console.log('Get heart data...')
 
-    const startDate = new Date('2021-01-01')
+    const heartData = readDataFile(DATA_TYPES.HEART)
+    const startDate = getStartDate(heartData)
     const endDate = new Date()
-    const data = await api.getHeartList(token, startDate, endDate)
 
-    saveFile('heart.json', data)
+    const newData = await api.getHeartList(token, startDate, endDate)
+    saveData(DATA_TYPES.HEART, heartData, newData)
   } catch (error) {
     return handleError(error)
   }
