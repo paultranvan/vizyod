@@ -198,8 +198,8 @@ const getWorkouts = async (token, startDate, endDate) => {
   const url = 'https://wbsapi.withings.net/v2/measure'
   const params = {
     action: 'getworkouts',
-    startdate: convertDateInTimestamp(startDate),
-    enddate: convertDateInTimestamp(endDate),
+    startdateymd: convertDateInYMD(startDate),
+    enddateymd: convertDateInYMD(endDate),
     data_fields: 'steps,distance,calories,hr_average'
   }
 
