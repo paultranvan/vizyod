@@ -225,7 +225,12 @@ const getHeartList = async (token, startDate, endDate) => {
     token,
     resDataKey: 'series'
   })
-  return { series: results }
+  const formattedResults = results
+    .map(res => {
+      return {...res, date: new Date(res.timestamp * 1000).toISOString()}
+    })
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+  return { series: formattedResults }
 }
 
 module.exports = {
