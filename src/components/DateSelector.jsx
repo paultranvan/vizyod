@@ -78,7 +78,7 @@ const DateSelector = ({ interval, handleChange }) => {
       >
         <ArrowBackIosIcon color="action" />
       </IconButton>
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={pickLocale()}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pickLocale()}>
         <DatePicker
           views={views}
           label="Date"
