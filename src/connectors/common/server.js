@@ -10,7 +10,7 @@ let appServer
 let config
 
 if (process.argv.length < 3) {
-  console.log(`Please pass the connector name. Abort.`)
+  console.log(`Please pass the connector name.`)
   process.exit(0)
 }
 

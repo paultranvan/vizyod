@@ -1,7 +1,8 @@
 const express = require('express')
 const fs = require('fs')
 const cors = require('cors')
-const { getAllData } = require('../connectors/withings')
+const { getAllData: getAllDataWithings } = require('../connectors/withings')
+const { getAllData: getAllDataStrava } = require('../connectors/strava')
 
 const app = express()
 const PORT = 8080
@@ -41,7 +42,7 @@ app.get('/data/:type', (req, res) => {
 app.post('/sync', async (req, res) => {
   try {
     console.log('Sync data...')
-    await getAllData()
+    await Promise.all([getAllDataWithings, getAllDataStrava])
     res.send('done')
   } catch (error) {
     console.error(error)

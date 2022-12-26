@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "get-token": "node src/connectors/withings/server.js",
+    "get-token": "node src/connectors/common/server.js",
     "server": "node src/server/server.js"
   },
   "eslintConfig": {
