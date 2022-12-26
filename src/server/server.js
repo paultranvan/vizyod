@@ -34,7 +34,16 @@ app.get('/data/:type', (req, res) => {
     })
     res.send(filteredData)
   } catch (error) {
-    console.error(error)
+    if (
+      (error.code && error.code === 'ENOENT') ||
+      (error.message && error.message.match(/Empty file/))
+    ) {
+      console.log('No file found for ', req.params.type)
+      console.log('Please run the connector first')
+      res.send([])
+    } else {
+      console.error(error)
+    }
     res.send(error)
   }
 })
