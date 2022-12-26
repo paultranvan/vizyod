@@ -1,8 +1,9 @@
+import { DATA_TYPES } from '../lib/consts'
 import { COLORS, GRAPH_TYPES } from '../lib/consts'
 import { roundNumber } from '../lib/utils'
 
 export const sleep = {
-  dataType: 'sleep',
+  dataType: DATA_TYPES.SLEEP,
   unit: 'Hours',
   dataSeries: [
     {
@@ -22,7 +23,7 @@ export const sleep = {
 }
 
 export const weight = {
-  dataType: 'weight',
+  dataType: DATA_TYPES.WEIGHT,
   unit: 'Kg',
   dataSeries: [
     {
@@ -44,8 +45,8 @@ export const weight = {
   graphType: GRAPH_TYPES.STACKED_LINES
 }
 
-export const activity = {
-  dataType: 'activity',
+export const dailyMeasure = {
+  dataType: DATA_TYPES.DAILY_MEASURE,
   dataSeries: [
     {
       name: 'steps',
@@ -69,7 +70,7 @@ export const activity = {
 export const heartRate = {
   // TODO: avg daily values are false (avg of avg with different cardinalities...)
   // we need high frequency data
-  dataType: 'activity',
+  dataType: DATA_TYPES.HEART,
   unit: 'Bpm',
   dataSeries: [
     {

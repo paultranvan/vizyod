@@ -27,3 +27,10 @@ export const INTERVALS_INDEX = {
   [MONTH]: 1,
   [YEAR]: 2
 }
+
+export const DATA_TYPES = {
+  SLEEP: 'sleep',
+  WEIGHT: 'weight',
+  ACTIVITY: 'activity',
+  DAILY_MEASURE: 'dailymeasure'
+}
