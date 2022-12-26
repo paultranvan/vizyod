@@ -1,30 +1,9 @@
 const axios = require('axios').default
 const get = require('lodash/get')
+const { roundNumber, convertDateInTimestamp, convertDateInYMD, convertTimestampInISO, sortByDate } = require('../common/utils')
 
-// TODO: put those utils func in utils and export for node.js
-const roundNumber = (number) => {
-  return Math.round(number * 100) / 100
-}
 
-const convertDateInTimestamp = (date) => {
-  return Math.floor(date.getTime() / 1000)
-}
 
-const convertDateInYMD = (date) => {
-  return date.toISOString().split('T')[0]
-}
-
-const convertTimestampInISO = (timestamp) => {
-  return new Date(timestamp).toISOString()
-}
-
-const sortByDate = (series) => {
-  return series.sort((a, b) => {
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
-    return new Date(a.date) - new Date(b.date)
-  })
-}
 
 const makePaginatedRequest = async (
   verb,

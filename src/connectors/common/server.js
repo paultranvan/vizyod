@@ -7,6 +7,14 @@ const PORT = 5000
 
 let oauth
 let appServer
+let config
+
+if (process.argv.length < 3) {
+  console.log(`Please pass the connector name. Abort.`)
+  process.exit(0)
+}
+
+const connector = process.argv[2]
 
 app.get('/get_token', async (req, res) => {
   try {
@@ -25,6 +33,11 @@ app.get('/get_token', async (req, res) => {
 
 appServer = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
-  oauth = new Oauth()
-  oauth.startTokenRequest()
+  config = require(`../${connector}/config`)
+  oauth = new Oauth(connector, config.TOKEN_URL)
+  if (config.STATE) {
+    // Required for withings
+    oauth.setState(config.STATE)
+  }
+  oauth.startTokenRequest(config.AUTHORIZE_URL, config.SCOPE)
 })

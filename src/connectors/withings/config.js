@@ -1,7 +1,9 @@
 module.exports = {
   CONNECTOR_NAME: 'withings',
-  REDIRECT_URI: 'http://localhost:5000/get_token',
-  TOKEN_FILE_PATH: '.token.json',
+  AUTHORIZE_URL: 'https://account.withings.com/oauth2_user/authorize2',
+  TOKEN_URL: 'https://wbsapi.withings.net/v2/oauth2',
+  SCOPE: ['user.activity', 'user.metrics'],
+  STATE: 'vizyod',
   DATA_TYPES: {
     SLEEP: 'sleep',
     ACTIVITY: 'activity',

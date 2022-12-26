@@ -1,110 +1,19 @@
-const fs = require('fs')
-const isEqual = require('lodash/isEqual')
 const api = require('./api')
-const { DATA_TYPES } = require('./consts')
-const { Oauth } = require('./oauth')
-
-const handleError = (error) => {
-  if (
-    (error.code && error.code === 'ENOENT') ||
-    (error.message && error.message.match(/Empty file/))
-  ) {
-    console.log('No token found: please run `npm run get-token`')
-    return
-  } else {
-    console.error(error)
-  }
-}
-
-const getAccessToken = async () => {
-  let token = JSON.parse(fs.readFileSync('.token.json'))
-  if (!token || !token.accessToken) {
-    throw new Error('Empty file')
-  }
-  try {
-    await api.getSleepSummary(token.accessToken, new Date(), new Date())
-  } catch (error) {
-    if (error && error.status === 401) {
-      console.log('Invalid token. Refresh it...')
-      const oauth = new Oauth()
-      token = await oauth.refreshAccessToken(token.refreshToken)
-      oauth.writeTokenFile(token)
-    }
-  }
-  return token.accessToken
-}
-
-const saveFile = (fileName, data) => {
-  const path = `data/${fileName}`
-  fs.writeFileSync(path, JSON.stringify(data, null, 2))
-  console.log(`${path} saved`)
-}
-
-const readDataFile = (dataType) => {
-  try {
-    const path = `data/${dataType}.json`
-    const content = fs.readFileSync(path)
-    return JSON.parse(content)  
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      console.log('No file yet, let\'s create it.')
-      return null
-    }
-    throw error
-  }
-}
-
-const seriesDeduplication = (existingSeries, newSeries) => {
-  const toRemoveIdx = []
-  const newSeriesToKeep = [...newSeries]
-  for (let i = 0; i < newSeries.length; i++) {
-    for (let j = existingSeries.length - 1; j >= 0; j--) {
-      if (isEqual(newSeries[i], existingSeries[j])) {
-        toRemoveIdx.push(i)
-        break
-      }
-      if (new Date(newSeries[i].date) > new Date(existingSeries[j].date)) {
-        // Assume all data are correclty sorted by asc date 
-        break
-      }
-    }    
-  } 
-  for (let i = toRemoveIdx.length -1 ; i >= 0; i--) {
-    // Go backward to avoid messing with array indexes
-    newSeriesToKeep.splice(toRemoveIdx[i], 1)
-  }
-  return [...existingSeries, ...newSeriesToKeep]
-}
-
-const saveData = (dataType, existingData, newData) => {
-  if (newData?.series?.length > 0) {
-    if (existingData?.series?.length > 0) {
-      const seriesToSave = seriesDeduplication(existingData.series, newData.series)
-      const nSavedSeries = seriesToSave.length - existingData.series.length
-      existingData.series = seriesToSave
-      saveFile(`${dataType}.json`, existingData)
-      console.log(`Saved ${nSavedSeries} new ${dataType} series`)
-  } else {
-      saveFile(`${dataType}.json`, newData)
-      console.log(`Saved ${newData.series.length} ${dataType} series`)
-    }
-  } else {
-    console.log('No data retrieved')
-  }
-}
-
-const getStartDate = (existingData) => {
-  return existingData?.series?.length > 0
-     ? new Date(existingData.series[existingData.series.length - 1].date)
-     : new Date(0)
-}
+const { DATA_TYPES, CONNECTOR_NAME, TOKEN_URL } = require('./config')
+const {
+  getAccessToken,
+  readDataFile,
+  saveData,
+  handleError
+} = require('../common/lib')
+const { getStartDateFromSeries } = require('../common/utils')
 
 const getSleepData = async (token) => {
   try {
     console.log('Get sleep data...')
 
     const sleepData = readDataFile(DATA_TYPES.SLEEP)
-    const startDate = getStartDate(sleepData)
+    const startDate = getStartDateFromSeries(sleepData)
     const endDate = new Date()
 
     const newSleepData = await api.getSleepSummary(token, startDate, endDate)
@@ -119,7 +28,7 @@ const getMeasureData = async (token) => {
     console.log('Get measure data...')
 
     const measuresData = readDataFile(DATA_TYPES.MEASURE)
-    const startDate = getStartDate(measuresData)
+    const startDate = getStartDateFromSeries(measuresData)
     const endDate = new Date()
 
     const newData = await api.getMeasure(token, startDate, endDate)
@@ -135,7 +44,7 @@ const getActivityData = async (token) => {
     console.log('Get activity data...')
 
     const activityData = readDataFile(DATA_TYPES.ACTIVITY)
-    const startDate = getStartDate(activityData)
+    const startDate = getStartDateFromSeries(activityData)
     const endDate = new Date()
 
     const newData = await api.getActivity(token, startDate, endDate)
@@ -151,7 +60,7 @@ const getHighFrequencyData = async (token) => {
     console.log('Get high frequency data...')
 
     const highFrequencyData = readDataFile(DATA_TYPES.HIGH_FREQUENCY_ACTIVITY)
-    const startDate = getStartDate(highFrequencyData)
+    const startDate = getStartDateFromSeries(highFrequencyData)
     const endDate = new Date()
 
     const newData = await api.getHighFrequencyActivity(token, startDate, endDate)
@@ -166,7 +75,7 @@ const getWorkoutData = async (token) => {
     console.log('Get workout data...')
 
     const workoutData = readDataFile(DATA_TYPES.WORKOUT)
-    const startDate = getStartDate(workoutData)
+    const startDate = getStartDateFromSeries(workoutData)
     const endDate = new Date()
 
     const newData = await api.getWorkouts(token, startDate, endDate)
@@ -181,7 +90,7 @@ const getHeartData = async (token) => {
     console.log('Get heart data...')
 
     const heartData = readDataFile(DATA_TYPES.HEART)
-    const startDate = getStartDate(heartData)
+    const startDate = getStartDateFromSeries(heartData)
     const endDate = new Date()
 
     const newData = await api.getHeartList(token, startDate, endDate)
@@ -191,16 +100,19 @@ const getHeartData = async (token) => {
   }
 }
 
-//TODO: fails when called from sync and token invalid
 const getAllData = async () => {
-  const token = await getAccessToken()
+  try {
+    const token = await getAccessToken(CONNECTOR_NAME, TOKEN_URL)
 
-  await getSleepData(token)
-  await getActivityData(token)
-  await getMeasureData(token)
-  await getWorkoutData(token)
-  await getHeartData(token)
-  await getHighFrequencyData(token)
+    await getSleepData(token)
+    await getActivityData(token)
+    await getMeasureData(token)
+    await getWorkoutData(token)
+    await getHeartData(token)
+    // await getHighFrequencyData(token)
+  } catch (err) {
+    handleError(err)
+  }
 }
 
 if (require.main === module) {
