@@ -7,7 +7,7 @@ module.exports = {
   DATA_TYPES: {
     SLEEP: 'sleep',
     ACTIVITY: 'activity',
-    MEASURE: 'measure',
+    WEIGHT: 'weight',
     WORKOUT: 'workout',
     HIGH_FREQUENCY_ACTIVITY: 'highfrequencyactivity',
     HEART: 'heart'

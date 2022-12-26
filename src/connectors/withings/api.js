@@ -2,9 +2,6 @@ const axios = require('axios').default
 const get = require('lodash/get')
 const { roundNumber, convertDateInTimestamp, convertDateInYMD, convertTimestampInISO, sortByDate } = require('../common/utils')
 
-
-
-
 const makePaginatedRequest = async (
   verb,
   { url, params, token, resDataKey }
@@ -74,7 +71,7 @@ const getSleepSummary = async (token, startDate, endDate) => {
   return { series: sortByDate(series) }
 }
 
-const getMeasure = async (token, startDate, endDate) => {
+const getWeight = async (token, startDate, endDate) => {
   const url = 'https://wbsapi.withings.net/measure'
 
   const measTypes = {
@@ -214,7 +211,7 @@ const getHeartList = async (token, startDate, endDate) => {
 
 module.exports = {
   getSleepSummary,
-  getMeasure,
+  getWeight,
   getActivity,
   getHighFrequencyActivity,
   getWorkouts,

@@ -23,17 +23,16 @@ const getSleepData = async (token) => {
   }
 }
 
-const getMeasureData = async (token) => {
+const getWeightData = async (token) => {
   try {
-    console.log('Get measure data...')
+    console.log('Get weight data...')
 
-    const measuresData = readDataFile(DATA_TYPES.MEASURE)
-    const startDate = getStartDateFromSeries(measuresData)
+    const weightData = readDataFile(DATA_TYPES.WEIGHT)
+    const startDate = getStartDateFromSeries(weightData)
     const endDate = new Date()
 
-    const newData = await api.getMeasure(token, startDate, endDate)
-    saveData(DATA_TYPES.MEASURE, measuresData, newData)
-
+    const newData = await api.getWeight(token, startDate, endDate)
+    saveData(DATA_TYPES.WEIGHT, weightData, newData)
   } catch (error) {
     return handleError(error)
   }
@@ -106,7 +105,7 @@ const getAllData = async () => {
 
     await getSleepData(token)
     await getActivityData(token)
-    await getMeasureData(token)
+    await getWeightData(token)
     await getWorkoutData(token)
     await getHeartData(token)
     // await getHighFrequencyData(token)

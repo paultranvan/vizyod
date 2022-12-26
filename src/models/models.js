@@ -21,8 +21,8 @@ export const sleep = {
   graphType: GRAPH_TYPES.STACKED_BAR
 }
 
-export const measure = {
-  dataType: 'measure',
+export const weight = {
+  dataType: 'weight',
   unit: 'Kg',
   dataSeries: [
     {
@@ -67,6 +67,8 @@ export const activity = {
 }
 
 export const heartRate = {
+  // TODO: avg daily values are false (avg of avg with different cardinalities...)
+  // we need high frequency data
   dataType: 'activity',
   unit: 'Bpm',
   dataSeries: [
