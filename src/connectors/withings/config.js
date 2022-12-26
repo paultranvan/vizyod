@@ -6,7 +6,7 @@ module.exports = {
   STATE: 'vizyod',
   DATA_TYPES: {
     SLEEP: 'sleep',
-    ACTIVITY: 'activity',
+    DAILY_MEASURE: 'dailymeasure',
     WEIGHT: 'weight',
     WORKOUT: 'workout',
     HIGH_FREQUENCY_ACTIVITY: 'highfrequencyactivity',

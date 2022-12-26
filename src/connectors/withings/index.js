@@ -38,17 +38,16 @@ const getWeightData = async (token) => {
   }
 }
 
-const getActivityData = async (token) => {
+const getDailyMeasureyData = async (token) => {
   try {
-    console.log('Get activity data...')
+    console.log('Get daily measure data...')
 
-    const activityData = readDataFile(DATA_TYPES.ACTIVITY)
+    const activityData = readDataFile(DATA_TYPES.DAILY_MEASURE)
     const startDate = getStartDateFromSeries(activityData)
     const endDate = new Date()
 
-    const newData = await api.getActivity(token, startDate, endDate)
-    saveData(DATA_TYPES.ACTIVITY, activityData, newData)
-
+    const newData = await api.getDailyMeasure(token, startDate, endDate)
+    saveData(DATA_TYPES.DAILY_MEASURE, activityData, newData)
   } catch (error) {
     return handleError(error)
   }
@@ -104,10 +103,10 @@ const getAllData = async () => {
     const token = await getAccessToken(CONNECTOR_NAME, TOKEN_URL)
 
     await getSleepData(token)
-    await getActivityData(token)
+    await getDailyMeasureyData(token)
     await getWeightData(token)
-    await getWorkoutData(token)
     await getHeartData(token)
+    // await getWorkoutData(token)
     // await getHighFrequencyData(token)
   } catch (err) {
     handleError(err)

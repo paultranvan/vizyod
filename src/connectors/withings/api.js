@@ -111,7 +111,7 @@ const getWeight = async (token, startDate, endDate) => {
   return { series: sortByDate(series) }
 }
 
-const getActivity = async (token, startDate, endDate) => {
+const getDailyMeasure = async (token, startDate, endDate) => {
   const url = 'https://wbsapi.withings.net/v2/measure'
   const activityFields = [
     'steps',
@@ -212,7 +212,7 @@ const getHeartList = async (token, startDate, endDate) => {
 module.exports = {
   getSleepSummary,
   getWeight,
-  getActivity,
+  getDailyMeasure,
   getHighFrequencyActivity,
   getWorkouts,
   getHeartList
