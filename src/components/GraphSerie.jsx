@@ -1,43 +1,46 @@
 import React, { useMemo } from 'react'
-import ReactEcharts from 'echarts-for-react'
-import { Box } from '@mui/material'
+import Graph from './Graph'
+import { makeGraphFromSeries, buildYAxis } from '../lib/graph'
+import { convertDateSingleDay } from '../lib/utils'
 
-const GraphSerie = ({ xData, series, yAxis }) => {
-  const option = useMemo(() => {
-    return {
-      xAxis: {
-        type: 'category',
-        data: xData
-      },
-      yAxis,
-      tooltip: {
-        show: true,
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
-        }
-      },
-      legend: {
-        show: true,
-        y: 'bottom',
-        formatter: (name) => {
-          //let itemValue = data.filter(item => item.name === name)
-          //return `${name}: ${itemValue[0].value}`
-          return name
-        }
-      },
-      series
-    }
-  }, [xData, series, yAxis])
+const GraphSerie = ({ model, data }) => {
+  // Filter missing values from data
+  const filteredData = useMemo(() => {
+    return data.filter((dataPoint) => {
+      return !!model.dataSeries.find((serie) => dataPoint.measure[serie.name])
+    })
+  }, [data, model])
 
-  return (
-    <Box>
-      <ReactEcharts option={option} notMerge={true} />
-    </Box>
+  // Create series based on model
+  const series = useMemo(() => {
+    return model.dataSeries.map((serie) => {
+      return {
+        data: filteredData.map((dataPoint) => {
+          const value = dataPoint.measure[serie.name]
+          return serie.dataTransform ? serie.dataTransform(value) : value
+        }),
+        name: serie.label,
+        color: serie.color
+      }
+    })
+  }, [model, filteredData])
+
+  // Extract dates
+  const dates = useMemo(
+    () => filteredData.map((dataPoint) => convertDateSingleDay(dataPoint.date)),
+    [filteredData]
   )
+
+  // Build Graph
+  const graphSeries = useMemo(() => {
+    return makeGraphFromSeries(model.graphType, series)
+  }, [model, series])
+
+  const yAxis = useMemo(() => {
+    return buildYAxis(model)
+  }, [model])
+
+  return <Graph xData={dates} series={graphSeries} yAxis={yAxis} />
 }
 
 export default GraphSerie

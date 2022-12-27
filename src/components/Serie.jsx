@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import GraphSerie from './GraphSerie'
-import { makeGraphFromSeries, buildYAxis } from '../lib/graph'
-import { convertDateSingleDay } from '../lib/utils'
+import { DATA_TYPES } from '../lib/consts'
+import MapList from './map/MapList'
 
 const Serie = ({ model, data }) => {
   // Filter missing values from data
@@ -11,36 +11,11 @@ const Serie = ({ model, data }) => {
     })
   }, [data, model])
 
-  // Create series based on model
-  const series = useMemo(() => {
-    return model.dataSeries.map((serie) => {
-      return {
-        data: filteredData.map((dataPoint) => {
-          const value = dataPoint.measure[serie.name]
-          return serie.dataTransform ? serie.dataTransform(value) : value
-        }),
-        name: serie.label,
-        color: serie.color
-      }
-    })
-  }, [model, filteredData])
-
-  // Extract dates
-  const dates = useMemo(
-    () => filteredData.map((dataPoint) => convertDateSingleDay(dataPoint.date)),
-    [filteredData]
+  return model.dataType === DATA_TYPES.ACTIVITY ? (
+    <MapList data={data} /> // TODO: filter data
+  ) : (
+    <GraphSerie model={model} data={filteredData} />
   )
-
-  // Build Graph
-  const graphSeries = useMemo(() => {
-    return makeGraphFromSeries(model.graphType, series)
-  }, [model, series])
-
-  const yAxis = useMemo(() => {
-    return buildYAxis(model)
-  }, [model])
-
-  return <GraphSerie xData={dates} series={graphSeries} yAxis={yAxis} />
 }
 
 export default Serie

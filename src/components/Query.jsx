@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import Serie from './Serie'
 import { getSeries } from '../queries/queries'
+import Box from '@mui/material/Box'
 
 // TODO: this component might be triggered more than necessary
 const Query = ({ model, dateRange }) => {
@@ -26,7 +27,11 @@ const Query = ({ model, dateRange }) => {
   if (!data) {
     return `No data found for ${model.dataType}`
   }
-  return <Serie model={model} data={data} />
+  return (
+    <Box>
+      <Serie model={model} data={data} />
+    </Box>
+  )
 }
 
 export default Query
