@@ -81,3 +81,9 @@ export const heartRate = {
   ],
   graphType: GRAPH_TYPES.LINES
 }
+
+export const activity = {
+  dataType: 'activity',
+  dataSeries: [], // TODO
+  graphType: GRAPH_TYPES.MAP
+}
